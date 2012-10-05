@@ -2,19 +2,57 @@
 
 <head>
 	<title>All-Campus Photo</title>
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.css" />
-	<!--[if lte IE 8]>
-	    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.ie.css" />
-	<![endif]-->
 	<link rel="stylesheet" href="mapstyles.css" />
+	<script src="jquery.1.7.2.min.js"></script>
+	<script src="easing.js"></script>
+	<script src="cartography.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('#viewport').cartography({
+				width: 6000,
+				height: 4000,
+				cols: 15,
+				rows: 10,
+				prefix: 'images/slices_',
+				suffix: '.jpg'
+			});
+
+			$('#splash').click(function(e){
+				$('#splash').fadeOut();
+				$('#viewport').data('mapposition')(e.offsetX/1000,e.offsetY/600);
+				console.log(e.offsetX/1000,e.offsetY/600);
+			});
+
+			$('#viewport').dblclick(function(){
+				if($('#splash').is(':hidden'))
+					$('#splash').fadeIn();
+			});
+
+			$.preloadImage('preload.gif');
+
+		});
+		</script>
+		<style type="text/css">
+		#viewport{
+			position:relative;
+		}
+		#splash{
+			position: absolute;
+			top:0;
+			left:0;
+			z-index:1337;
+			cursor:pointer;
+		}
+		.jcartography-loading{
+			background: #EEE url('preload.gif') center center no-repeat !important;
+		}
+		</style>
 
 </head>
 <body>
-	<div id="map">
-		<img src="allcampusphoto.jpg">
-	</div>
-	<script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
-	<script src="leaf.js"></script>
+	<h1>All-Campus Photo</h1>
+	<p class="controls">Click anywhere to zoom in. Double-click to zoom out. Drag to pan.</p>
+	<div id="viewport" style="width:970px; height:600px"><img id="splash" src="thumb.jpg" /></div>
+	<p class="caption">Hey, listen!</p>
 </body>
-
 </html>
